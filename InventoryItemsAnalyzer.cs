@@ -14,6 +14,7 @@ using ExileCore.Shared;
 using ExileCore.Shared.Enums;
 using Newtonsoft.Json.Linq;
 using SharpDX;
+// ReSharper disable StringLiteralTypo
 
 namespace InventoryItemsAnalyzer
 {
@@ -24,6 +25,80 @@ namespace InventoryItemsAnalyzer
         private readonly List<RectangleF> _goodItemsPos;
         private readonly List<RectangleF> _highItemsPos;
 
+        /// <summary>
+        /// Price doesnt always correlate with good/bad. We want also currency like cards when flip stacked decks
+        /// </summary>
+        private readonly string[] _goodDivCardsCuratedList =
+        {
+            // T1 fail safe
+            "House of Mirrors", "The Doctor", "Unrequited Love", "The Demon", "The Fiend", "Brother's Stash",
+            "Gift of Asenath", "The Cheater", "Beauty Through Death", "Nook's Crown", "The Immortal",
+            "Succor of the Sinless", "Alluring Bounty", "Immortal Resolve", "The Nurse", "The Samurai's Eye",
+            "The Craving", "Desecrated Virtue", "Abandoned Wealth", "The Iron Bard", "Seven Years Bad Luck",
+            "Pride of the First Ones", "The Progeny of Lunaris", "The White Knight", "The Long Con",
+            "The Dragon's Heart", "Wealth and Power", "Azyran's Reward", "The Price of Loyalty", "The Sustenance",
+            "The Greatest Intentions",
+
+            // T2 fail safe
+            "The Saint's Treasure", "The World Eater", "The Escape", "The Soul", "Hunter's Reward", "The Damned",
+            "The Eye of Terror", "The Hive of Knowledge", "The Gulf", "The Spark and the Flame", "The Primordial",
+            "The Strategist", "The Artist", "The Mayor", "Void of the Elements", "The Betrayal", "The Enlightened",
+            "Dark Dreams", "Squandered Prosperity", "The Bitter Blossom", "Council of Cats", "The Academic",
+
+            // T3 fail safe + currency cards
+            "Chaotic Disposition", "The Hoarder", "The Offering", "The Sephirot", "The Bargain", "Etched in Blood",
+            "Peaceful Moments", "Pride Before the Fall", "The Celestial Justicar", "The Queen",
+            "The Wolven King's Bite", "The Life Thief", "Remembrance", "The Eldritch Decay", "A Familiar Call",
+            "The Brittle Emperor", "The Cartographer", "The Polymath", "Rebirth", "Blessing of God", "The Undaunted",
+            "The Celestial Stone", "A Note in the Wind", "The Awakened", "Triskaidekaphobia", "Unchained",
+            "Mawr Blaidd", "The Cursed King", "The Dapper Prodigy", "The Ethereal", "The King's Heart",
+            "The Last One Standing", "The Risk", "The Valkyrie", "The Vast", "The Void", "Time-Lost Relic",
+            "The Breach", "The Hale Heart", "The Professor", "The Rite of Elements", "The Wilted Rose", "The Sacrifice",
+            "The Landing", "Burning Blood", "The Old Man", "Divine Justice", "Underground Forest", "The Fishmonger",
+            "Prometheus' Armoury", "Heterochromia",
+
+            // currency cards
+            "Boon of Justice",
+            "Bowyer's Dream",
+            "Buried Treasure",
+            "Coveted Possession",
+            "Demigod's Wager",
+            "Emperor of Purity",
+            //"Emperor's Luck",
+            "Harmony of Souls",
+            "Imperial Legacy",
+            "Last Hope",
+            "Loyalty",
+            "Lucky Connections",
+            "Lucky Deck",
+            "Monochrome",
+            "More is Never Enough",
+            "No Traces",
+            "Sambodhi's Vow",
+            "The Cacophony",
+            //"The Catalyst",
+            "The Chains that Bind",
+            "The Deal",
+            "The Fool",
+            "The Gemcutter",
+            "The Heroic Shot",
+            "The Innocent",
+            "The Inventor",
+            "The Journey",
+            //"The Master Artisan",
+            "The Seeker",
+            "The Side Quest",
+            "The Survivalist",
+            "The Union",
+            "The Wrath",
+            "Three Faces in the Dark",
+            //"Three Voices",
+            "Vinia's Token",
+            "The Warlord", //6L
+            "The Dark Mage", //6L
+            "The Porcupine", //6L
+        };
+        
         private readonly string[] _incElemDmg =
             {"FireDamagePercentage", "ColdDamagePercentage", "LightningDamagePercentage"};
 
@@ -206,17 +281,19 @@ namespace InventoryItemsAnalyzer
                 #region Div Card
 
                 if (bit.ClassName.Equals("DivinationCard"))
-                    if (ShitDivCards.Contains(bit.BaseName))
-                    {
-                        if (Settings.VendorShitDivCards)
-                        {
-                            _allItemsPos.Add(drawRect);
-                        }
-                    }
-                    else
+                {
+                    var highPriced = !ShitDivCards.Contains(bit.BaseName);
+                    var vendor = _goodDivCardsCuratedList.All(name => name != bit.BaseName);
+                    
+                    if (highPriced)
                     {
                         _goodItemsPos.Add(drawRect);
                     }
+                    else if (Settings.VendorShitDivCards && vendor)
+                    {
+                        _allItemsPos.Add(drawRect);
+                    }
+                }
 
                 #endregion
 
