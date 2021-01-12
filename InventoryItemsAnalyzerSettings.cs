@@ -710,6 +710,9 @@ namespace InventoryItemsAnalyzer
         
         [Menu("Treat veiled as regular item")]
         public ToggleNode TreatVeiledAsRegularItem { get; set; } = new ToggleNode(true);
+        
+        [Menu("Dont sell enchanted helmets (use loot custom filter)")]
+        public ToggleNode DontSellEnchantedHelmets { get; set; } = new ToggleNode(true);
 
         #endregion
     }

@@ -291,6 +291,15 @@ namespace InventoryItemsAnalyzer
                     //---------------------------------------------------------------------------------------------------------------------------
                     if (highItemLevel)
                         _highItemsPos.Add(drawRect);
+                    
+                    // skip enchanted gear
+                    if (Settings.DontSellEnchantedHelmets &&
+                        bit?.ClassName == "Helmet" &&
+                        _mods.Any(mod =>
+                            mod.Record.UserFriendlyName.ToLower().Contains("enchant")))
+                    {
+                        continue;
+                    }
 
                     if (!Settings.TreatVeiledAsRegularItem &&
                         IsVeiled())
