@@ -29,7 +29,7 @@ namespace InventoryItemsAnalyzer
         private readonly List<RectangleF> _highItemsPos;
         private readonly string[] _incElemDmg =
             {"FireDamagePercentage", "ColdDamagePercentage", "LightningDamagePercentage"};
-        private const string LEAGUE_NAME = "Heist";
+        private const string LEAGUE_NAME = "Ritual";
         private readonly List<RectangleF> _veilItemsPos;
         private int _countInventory;
         private int _idenf;
