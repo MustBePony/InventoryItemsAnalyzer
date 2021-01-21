@@ -181,6 +181,19 @@ namespace InventoryItemsAnalyzer
 
                     #endregion
 
+                    #region Vendor for scrolls
+
+                    if (Settings.VendorForScrolls)
+                    {
+                        if (item.Path == @"Metadata/Items/Currency/CurrencyArmourQuality" ||
+                            item.Path == @"Metadata/Items/Currency/CurrencyWeaponQuality")
+                        {
+                            _allItemsPos.Add(drawRect);
+                        }
+                    }
+
+                    #endregion
+                    
                     #region Vendor for alts
 
                     if (Settings.VendorRareJewels &&

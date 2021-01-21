@@ -713,6 +713,9 @@ namespace InventoryItemsAnalyzer
         
         [Menu("Dont sell enchanted helmets (use loot custom filter)")]
         public ToggleNode DontSellEnchantedHelmets { get; set; } = new ToggleNode(true);
+        
+        [Menu("Vendor for scrolls")]
+        public ToggleNode VendorForScrolls { get; set; } = new ToggleNode(true);
 
         #endregion
     }
