@@ -248,18 +248,30 @@ namespace InventoryItemsAnalyzer
 
                     #endregion
 
-                    #region 6socket N/M for sale
+                    #region Vendor 6socket (but not 6L)
 
-                    if (modsComponent?.ItemRarity == ItemRarity.Normal || modsComponent?.ItemRarity == ItemRarity.Magic)
-                    {
-                        if (item.GetComponent<Sockets>()?.NumberOfSockets == 6)
-                            _allItemsPos.Add(drawRect);
-
-                        continue;
-                    }
+                    if (item.GetComponent<Sockets>()?.NumberOfSockets == 6 &&
+                        item.GetComponent<Sockets>()?.LargestLinkSize <= 5)
+                        _allItemsPos.Add(drawRect);
 
                     #endregion
 
+                    #region Vendor blue trash
+
+                    if (Settings.VendorBlueTrash && 
+                        modsComponent?.ItemRarity == ItemRarity.Magic &&
+                        item.GetComponent<Sockets>()?.LargestLinkSize <= 5)
+                    {
+                        var baseComponent = item.GetComponent<Base>();
+                        if (!baseComponent.isElder && !baseComponent.isShaper && !baseComponent.isCrusader &&
+                            !baseComponent.isHunter && !baseComponent.isRedeemer && !baseComponent.isWarlord)
+                        {
+                            _allItemsPos.Add(drawRect);
+                        }
+                    }
+
+                    #endregion
+                    
                     if (modsComponent?.ItemRarity != ItemRarity.Rare || modsComponent.Identified == false)
                         continue;
 

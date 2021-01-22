@@ -716,6 +716,9 @@ namespace InventoryItemsAnalyzer
         
         [Menu("Vendor for scrolls")]
         public ToggleNode VendorForScrolls { get; set; } = new ToggleNode(true);
+        
+        [Menu("Vendor <Rare trash")]
+        public ToggleNode VendorBlueTrash { get; set; } = new ToggleNode(true);
 
         #endregion
     }
