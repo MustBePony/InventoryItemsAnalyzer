@@ -132,18 +132,25 @@ namespace InventoryItemsAnalyzer
                 var normalInventoryItems = _ingameState.IngameUi.InventoryPanel[InventoryIndex.PlayerInventory]
                     .VisibleInventoryItems;
 
-                var ritualItems = _ingameState.IngameUi.RitualWindow.Items;
+                try
+                {
+                    var ritualItems = _ingameState.IngameUi.RitualWindow.Items;
 
-                var allItems = normalInventoryItems.Concat(ritualItems).ToList();
+                    normalInventoryItems = normalInventoryItems.Concat(ritualItems).ToList();
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
 
-                var temp = allItems.Count(t => t.Item?.GetComponent<Mods>()?.Identified == true);
+                var temp = normalInventoryItems.Count(t => t.Item?.GetComponent<Mods>()?.Identified == true);
 
                 //LogMessage(normalInventoryItems.Count.ToString() + " " + CountInventory.ToString() + " // " + temp .ToString() + " " + idenf.ToString(), 3f);
 
-                if (allItems.Count != _countInventory || temp != _idenf)
+                if (normalInventoryItems.Count != _countInventory || temp != _idenf)
                 {
-                    ScanInventory(allItems);
-                    _countInventory = allItems.Count;
+                    ScanInventory(normalInventoryItems);
+                    _countInventory = normalInventoryItems.Count;
                     _idenf = temp;
                 }
 
