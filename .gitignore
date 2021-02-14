@@ -250,6 +250,3 @@ InventoryItemsAnalyzer.pdb
 /.idea/
 /BaseType.txt
 /Errors.txt
-
-# KDiff3
-*.orig
